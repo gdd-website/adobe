@@ -182,7 +182,21 @@ input { font: inherit; }
   font-weight: 700; font-size: 14px; line-height: 18px;
   transition: background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast);
 }
-.ask-ai:hover { background: var(--gray-100); }
+.ask-ai { position: relative; isolation: isolate; }
+/* Hover: 2px AI gradient ring (Figma "AI Mode" GradientBackground), rotating around the pill */
+.ask-ai::before {
+  content: ''; position: absolute; inset: -2px; border-radius: inherit; padding: 2px; pointer-events: none;
+  background: conic-gradient(from var(--ai-angle),
+    #fff 0%, #fff1c4 9.47%, #f4d572 16.36%, #ecc035 21.53%, #e9b920 23.25%, #de7624 29.9%, #d33327 36.54%,
+    #b83252 46.15%, #9d327e 55.77%, #6f2fab 59.69%, #412dd8 63.62%, #3b63fb 72.6%, #8ca4fd 78.79%,
+    #dde4ff 84.99%, #fff 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity var(--dur) var(--ease-out);
+  animation: aiRing 3s linear infinite; animation-play-state: paused;
+}
+.ask-ai:hover::before, .ask-ai:focus-visible::before { opacity: 1; animation-play-state: running; }
+@media (prefers-reduced-motion: reduce) { .ask-ai::before { animation: none; } }
 .ask-ai:active { transform: scale(.97); }
 .ask-ai__label { padding: 7px 4px 7px 14px; }
 .ask-ai__icon { width: 20px; height: 20px; margin-right: 14px; color: var(--gray-800); display: flex; }
