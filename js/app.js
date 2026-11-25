@@ -19,16 +19,17 @@
     jira: 'disconnected',   // connected | disconnected
     cal: 'disconnected',    // connected | disconnected
     runs: 'empty',          // data | empty
-    // Developer Home tabs start on the same empty states as the feed; a button reveals the cards
-    home: { prs: false, jira: false, meetings: false },
     pr: { kind: 'all', repo: 'all' },
     jf: { type: 'all', priority: 'all', status: 'all' },
     rf: { show: 'mine', status: 'all', q: '' },
   };
   const saved = JSON.parse(sessionStorage.getItem('dh-state-v2') || 'null');
   const S = Object.assign(structuredClone(DEFAULTS), saved || {});
-  S.home = Object.assign({ prs: false, jira: false, meetings: false }, S.home);
-  const T = { loading: {}, syncing: {} }; // transient, not persisted
+  delete S.home; // older saved state kept Home reveals; they are now per-visit (T.revealed)
+  // transient, not persisted. revealed: the Home tab whose cards were opened from its empty state
+  // (the icon on 1.1A–1.1E, the connect/login button on PRs · Jira · Meetings). Cleared whenever the user
+  // lands on a tab, so every visit starts on that tab's empty state
+  const T = { loading: {}, syncing: {}, revealed: null };
   const persist = () => sessionStorage.setItem('dh-state-v2', JSON.stringify(S));
   DH.state = S;
 
@@ -74,14 +75,29 @@
     meetings: () => C.empty({ variant: 'calendar', iconHtml: `<span class="cal-icon">${DH.svg.calendar36}</span>`, title: 'Your calendar isn’t connected', desc: 'Connect your calendar to see today’s meetings, time booked, and agendas here.',
       actions: C.btn('Connect calendar', 'home-reveal', 'accent', 'data-tab="meetings" data-msg="Calendar connected (simulated)."') }),
   };
+  const HOME_CARDS = {
+    recent: { data: () => DH.homeRecent, card: C.recentCard, viewAll: false }, // frame 1.1A has no "View All" link
+    favourites: { data: () => DH.homeFavourites, card: C.favouriteCard },
+    team: { data: () => DH.homeTeam, card: C.teamCard },
+    announcement: { data: () => DH.homeAnnouncements, card: C.announcementCard },
+    events: { data: () => DH.homeEvents, card: C.eventCard },
+  };
   const homePanel = (tab) => {
     const t = DH.homeTabs.find((x) => x.id === tab);
-    if (HOME_EMPTY[tab] && !S.home[tab]) return HOME_EMPTY[tab]().replace('class="empty', 'class="empty empty--home');
+    if (HOME_EMPTY[tab] && T.revealed !== tab) return HOME_EMPTY[tab]().replace('class="empty', 'class="empty empty--home');
     if (tab === 'prs') return `<div class="card-grid">${DH.homePRs.map(C.prCard).join('')}</div>${viewAll('github')}`;
     if (tab === 'jira') return `<div class="card-grid">${DH.homeJira.map(C.jiraCard).join('')}</div>${viewAll('jira')}`;
     if (tab === 'meetings') return `<div class="card-grid">${DH.homeMeetings.map(C.meetingCard).join('')}</div>${viewAll('meetings')}`;
-    // Tabs present in the tab bar but not designed in this Figma section
-    return C.empty({ icon: 'folder-search.svg', title: 'No items to display', desc: 'There’s nothing to display here right now.' }).replace('class="empty', 'class="empty empty--compact');
+    // Recently Accessed · Favourites · My Team's Services · Announcement · Upcoming Events (Figma 1.1A–1.1E):
+    // start on "No items to display"; clicking the grey icon circle reveals the designed cards
+    const cards = HOME_CARDS[tab];
+    if (cards && T.revealed === tab) {
+      return `<div class="card-grid">${cards.data().map(cards.card).join('')}</div>${cards.viewAll === false ? ''
+        : `<button class="link-viewall" data-action="home-viewall" data-label="${t.label}">View All</button>`}`;
+    }
+    return C.empty({ icon: 'folder-search.svg', title: 'No items to display', desc: 'There’s nothing to display here right now.',
+      iconAction: cards ? `data-action="home-reveal" data-tab="${tab}" data-msg="${t.label} loaded (simulated)." aria-label="Show ${t.label}"` : '' })
+      .replace('class="empty', 'class="empty empty--compact');
   };
   // "View All" always lands on that feed tab's empty / not-connected state
   const EMPTY_QUERY = { github: 'gh=not-connected', jira: 'jira=disconnected', meetings: 'cal=disconnected' };
@@ -401,6 +417,7 @@
   DH.route('/home/:tab', ({ tab }, q, opts) => {
     if (!DH.homeTabs.some((t) => t.id === tab)) return DH.navigate('#/home/prs', { replace: true });
     S.homeTab = tab; persist();
+    T.revealed = null;
     renderHome(tab, opts);
     renderRail();
     document.title = 'Developer Home';
@@ -472,7 +489,8 @@
       if (el.classList.contains('is-loading')) return;
       el.classList.add('is-loading');
       await wait(900);
-      S.home[el.dataset.tab] = true; persist();
+      if (S.homeTab !== el.dataset.tab) return; // user moved to another tab while it was loading
+      T.revealed = el.dataset.tab;
       const panel = $('#homePanel', main);
       if (panel && S.homeTab === el.dataset.tab) {
         panel.innerHTML = homePanel(el.dataset.tab);
@@ -540,6 +558,9 @@
       onPick: (v) => DH.toast(`Opening ${v} in a new tab — simulated, no external link in prototype.`),
     }),
     'open-jira': () => DH.toast('Opening Jira in a new tab — simulated, no external link in prototype.'),
+    'card-more': (el) => DH.toast(`More actions for “${el.dataset.what}” — simulated.`, 'neutral'),
+    'card-cicd': (el) => DH.toast(`Opening CI/CD pipeline for ${el.dataset.what} — simulated.`),
+    'home-viewall': (el) => notInSection(`The full ${el.dataset.label} page`),
     'open-external': (el) => DH.toast(`Opening “${el.dataset.what}” in ${el.dataset.where} — simulated.`),
     'conn-info': (el) => DH.toast(el.dataset.tip || 'Connected', 'neutral'),
     // Not connected → SaaS only / Corp (+VPN required); alerts complete the connection

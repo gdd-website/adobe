@@ -55,6 +55,67 @@ window.DH = window.DH || {};
       </span>
     </button>`;
 
+  /* ---------- Tab cards · Recently Accessed / Favourites / My Team's Services /
+     Announcement / Upcoming Events (Figma 1.1A–1.1E) ---------- */
+  const meta = (icon, text) => `<span class="tcard__meta-item"><img src="${I(icon)}" alt="">${esc(text)}</span>`;
+  const person = (c) => `<span class="tcard__meta-item tcard__meta-item--user"><img class="tcard__avatar" src="${c.avatar}" alt="">${esc(c.user)}</span>`;
+  const titleBtn = (c, where, cls = '') => `<button class="tcard__title ${cls}" data-action="open-external" data-what="${esc(c.title)}" data-where="${where}">${esc(c.title)}</button>`;
+  const moreBtn = (c) => `<button class="tcard__icon-btn" data-action="card-more" data-what="${esc(c.title)}" aria-label="More actions for ${esc(c.title)}"><img src="${I('tab-more.svg')}" alt="" width="20" height="20"></button>`;
+  const star = `<img class="tcard__star" src="${I('tab-star.svg')}" alt="Favourite" width="14" height="14">`;
+  const tag = (label) => `<span class="tcard__tag"><img src="${I('tab-dot.svg')}" alt="">${esc(label)}</span>`;
+
+  C.recentCard = (c) => `
+    <div class="fcard tcard tcard--recent">
+      <img class="tcard__type" src="${I(`tab-${c.icon}.svg`)}" alt="">
+      <div class="tcard__body">
+        <div class="tcard__titlerow">${titleBtn(c, 'Developer Home')}${moreBtn(c)}</div>
+        <div class="tcard__meta">${c.kind ? meta('tab-file.svg', c.kind) : ''}${meta('tab-clock.svg', c.time)}${person(c)}</div>
+      </div>
+    </div>`;
+
+  C.favouriteCard = (c) => `
+    <div class="fcard tcard tcard--fav">
+      <div class="tcard__body">
+        <div class="tcard__titlerow">${titleBtn(c, 'Developer Home')}${star}</div>
+        <div class="tcard__meta">${meta('tab-file.svg', c.kind)}${person(c)}</div>
+      </div>
+    </div>`;
+
+  C.teamCard = (c) => `
+    <div class="fcard tcard tcard--team">
+      <div class="tcard__body">
+        <div class="tcard__titlerow">${titleBtn(c, 'Service catalog', c.bold ? 'tcard__title--bold' : '')}<span class="tcard__actions">${star}${moreBtn(c)}</span></div>
+        <div class="tcard__meta">
+          <span class="tcard__badge">${esc(c.badge)}</span>${c.mgr ? '<span class="tcard__badge tcard__badge--mgr">MGR</span>' : ''}
+          <span class="tcard__slo"><b>SLO:</b> ${esc(c.slo)}</span>${person(c)}
+        </div>
+        <div class="tcard__cicd">${c.cicd
+    ? `<button class="tcard__cicd-btn" data-action="card-cicd" data-what="${esc(c.title)}"><img src="${I('tab-share.svg')}" alt="" width="16" height="16">CI/CD</button>`
+    : '<span class="tcard__cicd-none">This service has no CI/CD pipeline</span>'}</div>
+      </div>
+    </div>`;
+
+  C.announcementCard = (c) => `
+    <div class="fcard tcard tcard--ann">
+      <div class="tcard__body">
+        <div class="tcard__titlerow">
+          <span class="tcard__titlegroup">${titleBtn(c, 'Developer Home', 'ellipsis')}${c.isNew ? '<span class="tcard__badge tcard__badge--new">New</span>' : ''}</span>
+          ${tag(c.tag)}
+        </div>
+        <p class="tcard__desc">${esc(c.desc)}</p>
+        <div class="tcard__meta">${meta('tab-file.svg', c.source)}${meta('tab-clock.svg', c.time)}${person(c)}</div>
+      </div>
+    </div>`;
+
+  C.eventCard = (c) => `
+    <div class="fcard tcard tcard--event">
+      <span class="tcard__date"><span class="tcard__date-text"><small>${esc(c.month)}</small><strong>${esc(c.day)}</strong></span><span class="tcard__divider"></span></span>
+      <div class="tcard__body">
+        <div class="tcard__titlerow">${titleBtn(c, 'Events')}${tag(c.tag)}</div>
+        <div class="tcard__meta">${meta('tab-desktop.svg', c.location)}${meta('tab-user.svg', `${c.registered} registered`)}${meta('tab-clock.svg', c.time)}</div>
+      </div>
+    </div>`;
+
   /* ---------- Tabs ---------- */
   C.tabs = (items, active, { kind = 'home', label = 'Tabs' } = {}) => `
     <div class="tabs" role="tablist" aria-label="${esc(label)}">
@@ -184,9 +245,12 @@ window.DH = window.DH || {};
     </div>`;
 
   /* ---------- Empty state ---------- */
-  C.empty = ({ icon, iconHtml, title, desc, actions = '', variant = '' }) => `
+  // iconAction: optional attributes that turn the grey icon circle into a button
+  C.empty = ({ icon, iconHtml, title, desc, actions = '', variant = '', iconAction = '' }) => `
     <div class="empty panel-in${variant ? ` empty--${variant}` : ''}">
-      <div class="empty__icon">${iconHtml || `<img src="${I(icon)}" alt="">`}</div>
+      ${iconAction
+    ? `<button class="empty__icon empty__icon--btn" ${iconAction}>${iconHtml || `<img src="${I(icon)}" alt="">`}</button>`
+    : `<div class="empty__icon">${iconHtml || `<img src="${I(icon)}" alt="">`}</div>`}
       <div class="empty__msg"><p class="empty__title">${esc(title)}</p><p class="empty__desc">${esc(desc)}</p></div>
       ${actions ? `<div class="empty__actions">${actions}</div>` : ''}
     </div>`;

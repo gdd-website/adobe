@@ -81,6 +81,69 @@ window.DH = window.DH || {};
     { time: '3:00 PM', dur: '45 min', title: 'Security review', loc: 'Conference room 2B', icon: ICON('location.svg') },
   ];
 
+  /* ---------- Home · Recently Accessed / Favourites / My Team's Services /
+     Announcement / Upcoming Events (Figma frames 1.1A–1.1E, node 16434:100319…101135) ---------- */
+  const AV = IMG('avatar.png'); // Figma "Photo" fill is the same image as the profile avatar
+
+  // icon: tools | doc | add | grid   ·  kind: optional "file" metadata label
+  DH.homeRecent = [
+    { icon: 'grid', title: 'Asset compute worker', kind: 'Cluster', time: '12 hrs ago', user: 'Group name' },
+    { icon: 'doc', title: 'API authentication guide', time: '12 hrs ago', user: 'Prathib' },
+    { icon: 'grid', title: 'Developer console UDP', kind: 'Service', time: '12 hrs ago', user: 'Prathib' },
+    { icon: 'tools', title: 'IDocs studio', time: '12 hrs ago', user: 'Prathib' },
+    { icon: 'add', title: 'Node.js microservice', time: '12 hrs ago', user: 'Prathib' },
+    { icon: 'add', title: 'React SPA (Spectrum)', time: '12 hrs ago', user: 'Prathib' },
+    { icon: 'doc', title: 'Service onboarding checklist', time: '12 hrs ago', user: 'Prathib' },
+    { icon: 'tools', title: 'Sel service portal', time: '12 hrs ago', user: 'Prathib' },
+  ].map((c) => ({ ...c, avatar: AV }));
+
+  DH.homeFavourites = [
+    ['Developer console transporter', 'Namespaces'], ['IDocs studio', 'AI skills'], ['Getting started with DevHome', 'LDAP groups'],
+    ['Node.js microservice', 'Cloud accounts'], ['Exchange app registry MyExchange', 'Developer utilities'], ['IDocs studio', 'AI agents'],
+    ['Developer console transporter', 'MCP servers'], ['IDocs studio', 'LDAP groups'], ['Node.js microservice', 'Namespaces'],
+    ['Node.js microservice', 'Cloud accounts'], ['Sel service portal', 'AI skills'], ['React SPA (Spectrum)', 'Developer utilities'],
+    ['Service onboarding checklist', 'LDAP groups'], ['IDocs studio', 'Developer utilities'], ['Getting started with DevHome', 'Namespaces'],
+    ['Developer console UDP', 'Cloud accounts'], ['API authentication guide', 'LDAP groups'], ['Asset compute worker', 'AI skills'],
+    ['React SPA (Spectrum)', 'AI agents'], ['Service onboarding checklist', 'Cloud accounts'], ['Exchange app registry MyExchange', 'Developer utilities'],
+  ].map(([title, kind]) => ({ title, kind, user: 'Prathib', avatar: AV }));
+
+  // cicd: true → "CI/CD" button, false → "This service has no CI/CD pipeline"
+  DH.homeTeam = [
+    { title: 'S19124 Developer home', bold: true, cicd: true },
+    { title: 'S51707 Developer home portal', cicd: false },
+    { title: 'S581 iDocs', cicd: true },
+    { title: 'S24230 Auth gateway', cicd: false },
+    { title: 'S33102 Config service', mgr: true, cicd: true },
+    { title: 'S24873 Developer home service', cicd: true },
+    { title: 'S581 Gateway service', cicd: false },
+    { title: 'S19124 Developer home', bold: true, cicd: true },
+    { title: 'S51707 Developer home portal', cicd: true },
+  ].map((c) => ({ ...c, badge: 'Technical service', slo: '99.97%', user: 'Prathib', avatar: AV }));
+
+  DH.homeAnnouncements = [
+    { title: 'EngTip 25 - Knowledge Sharing - Be the Assist', tag: 'Engineering Tips', desc: 'Whether it’s pairing, PR reviews, tech talks, or mentorship, it cuts both ways explaining something sharpens your own understanding as much as it helps your teammate.', source: 'Developer Experience', time: '13 days ago', user: 'Amit Om Mishra' },
+    { title: 'DevHome & IDocs - What’s New (mid June)', tag: 'Product Update', desc: 'A quick update across DevHome, IDocs, and our plugin contributor community.', source: 'Developer Home', time: '13 days ago', user: 'Ronit Kumar' },
+    { title: 'A New Way to Access Announcements', isNew: true, tag: 'Product Update', desc: 'To make important updates easier to discover, Announcements are now available directly within the Notifications center.', source: 'Developer Home', time: '13 days ago', user: 'Ronit Kumar' },
+    { title: 'New Community Section Now Available on Developer Home', tag: 'Product Update', desc: 'We’re excited to announce the launch of the Community section on Adobe Developer Home!', source: 'Developer Home', time: '22 days ago', user: 'Ronit Kumar' },
+    { title: 'DevHome & IDocs - What’s new (early June)', tag: 'Product Update', desc: 'A quick update across DevHome, IDocs and our plugin contributor community.', source: 'Developer Home', time: '22 days ago', user: 'Ronit Kumar' },
+    { title: 'Announcing the launch of Developer Utilities Hub on Developer Home', tag: 'Product Update', desc: 'Developer Utilities Hub — an in-browser toolkit for everyday dev tasks.', source: 'Developer Home', time: '30 days ago', user: 'Ronit Kumar' },
+    { title: 'New in Early Preview: Developer Home Enterprise AI Search', tag: 'Product Update', desc: 'We’re excited to introduce Enterprise AI Search in Developer Home bringing AI-powered discovery directly into the developer workflow.', source: 'Developer Home', time: '90 days ago', user: 'Ronit Kumar' },
+    { title: 'Announcing Zero-to-AI Agent: Build and Deploy AI Agents at Adobe', tag: 'AI Update', desc: 'Announcing Zero-to-AI Agent: Build and Deploy AI Agents at Adobe.', source: 'Flex', time: '120 days ago', user: 'Rohan Kapoor' },
+    { title: 'Developer Home Quarterly Roadmap Update', tag: 'Product Update', desc: 'See what shipped this quarter and what the Developer Home team is planning next.', source: 'Developer Home', time: '150 days ago', user: 'Rohit Kumar' },
+  ].map((c) => ({ ...c, avatar: AV }));
+
+  DH.homeEvents = [
+    { month: 'Apr', day: '22', title: 'AI engineering summit', tag: 'Summit', registered: 409, time: '10:00 AM PST' },
+    { month: 'Apr', day: '28', title: 'Platform reliability week', tag: 'Conference', registered: 349, time: 'All day' },
+    { month: 'May', day: '5', title: 'MCP server workshop', tag: 'Workshop', registered: 248, time: '2:00 PM PST' },
+    { month: 'May', day: '12', title: 'Adobe tech radar review - Q2', tag: 'Community', registered: 547, time: '10:00 AM PST' },
+    { month: 'May', day: '22', title: 'Kubernetes office hours', tag: 'Office Hours', registered: 28, time: '3:00 PM PST' },
+    { month: 'May', day: '27', title: 'AI workshop', tag: 'Workshop', registered: 860, time: '7:00 PM PST' },
+    { month: 'Apr', day: '22', title: 'Unified CI community call', tag: 'Community', registered: 312, time: '11:00 AM PST' },
+    { month: 'Apr', day: '22', title: 'IDocs authoring workshop', tag: 'Workshop', registered: 144, time: '1:00 PM PST' },
+    { month: 'Apr', day: '22', title: 'Developer home office hours', tag: 'Office Hours', registered: 205, time: '9:00 AM PST' },
+  ].map((c) => ({ ...c, location: 'Virtual' }));
+
   /* ---------- Developer Feed · GitHub PRs ---------- */
   // kind: 'mine' | 'review' | 'closed'   source: 'saas' | 'corp'
   DH.pullRequests = [

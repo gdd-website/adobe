@@ -280,6 +280,78 @@ input { font: inherit; }
 .mcard__divider { width: 1px; align-self: stretch; background: var(--gray-200); border-radius: 2px; }
 .fcard__text--meeting { padding-left: 4px; }
 
+/* ---------- Tab cards · Recently Accessed / Favourites / My Team's Services / Announcement / Upcoming Events
+   (Figma 1.1A–1.1E). Share .fcard's grey surface, 12px radius and hover tint. ---------- */
+.tcard { gap: 10px; }
+.tcard--recent, .tcard--fav { height: 68px; padding: 10px 16px; align-items: center; }
+.tcard--team { height: 110px; padding: 10px 16px; }
+.tcard--ann { height: 128px; padding: 12px 16px; }
+.tcard--event { height: 68px; padding: 13px 16px; gap: 20px; }
+.tcard__type { width: 18px; height: 18px; flex-shrink: 0; align-self: flex-start; margin-top: 1px; }
+.tcard--recent .tcard__type { margin-top: 2px; }
+.tcard__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.tcard--fav .tcard__body { gap: 3px; }
+.tcard--team .tcard__body { gap: 8px; }
+.tcard--ann .tcard__body { gap: 2px; }
+.tcard--event .tcard__body { gap: 8px; }
+.tcard__titlerow { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.tcard--recent .tcard__titlerow { padding-left: 2px; }
+.tcard--fav .tcard__titlerow { gap: 8px; }
+.tcard--team .tcard__titlerow { gap: 6px; }
+.tcard--ann .tcard__titlerow { gap: 24px; }
+.tcard--event .tcard__titlerow { gap: 12px; align-items: flex-start; }
+.tcard__title {
+  flex: 1; min-width: 0; text-align: left; font-weight: 700; font-size: 14px; line-height: 20px; color: var(--accent);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-radius: 2px;
+}
+.tcard--fav .tcard__title { line-height: 24px; }
+.tcard--team .tcard__title { font-weight: 500; }
+.tcard--team .tcard__title--bold { font-weight: 700; }
+.tcard__titlegroup { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; overflow: hidden; }
+.tcard__titlegroup .tcard__title { flex: 0 1 auto; }
+.tcard__icon-btn { width: 20px; height: 20px; flex-shrink: 0; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: background-color var(--dur-fast); }
+.tcard__icon-btn:hover { background: var(--gray-200); }
+.tcard__icon-btn img { width: 20px; height: 20px; }
+.tcard__star { width: 14px; height: 14px; flex-shrink: 0; }
+.tcard__actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.tcard__tag { display: flex; align-items: center; gap: 6px; padding-top: 3px; flex-shrink: 0; font-size: 12px; line-height: normal; color: var(--gray-800); white-space: nowrap; }
+.tcard__tag img { width: 8px; height: 8px; }
+.tcard__meta { display: flex; align-items: center; gap: 12px; min-width: 0; overflow: hidden; }
+.tcard__meta-item { display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 1.07; color: var(--gray-600); white-space: nowrap; }
+.tcard__meta-item img { width: 14px; height: 14px; flex-shrink: 0; }
+.tcard__meta-item img.tcard__avatar { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; }
+.tcard--team .tcard__meta-item--user { gap: 6px; }
+.tcard__badge { flex-shrink: 0; padding: 5px 8px; border-radius: 7px; background: #dfeaf8; color: #000; font-weight: 500; font-size: 11px; line-height: 14px; white-space: nowrap; }
+.tcard__badge--mgr { background: #ffeccf; }
+.tcard__badge--new { padding: 4px 9px; background: #ffeccf; font-size: 10px; line-height: 13px; }
+.tcard__slo { flex-shrink: 0; font-size: 12px; line-height: 1.07; color: var(--gray-600); white-space: nowrap; }
+.tcard__slo b { font-weight: 400; color: #222; }
+.tcard__cicd { margin-top: 6px; display: flex; align-items: center; min-height: 24px; }
+.tcard__cicd-btn {
+  display: inline-flex; align-items: center; gap: 5px; min-width: 54px; padding: 2px 12px 2px 10px;
+  border: 2px solid var(--gray-300); border-radius: 12px; font-weight: 700; font-size: 12px; line-height: 16px; color: var(--gray-800);
+  transition: background-color var(--dur-fast);
+}
+.tcard__cicd-btn:hover { background: var(--gray-100); }
+.tcard__cicd-btn img { width: 16px; height: 16px; }
+.tcard__cicd-none { font-weight: 500; font-size: 12px; line-height: 16px; color: var(--gray-600); }
+.tcard__desc {
+  font-size: 12px; line-height: 16px; color: var(--gray-800); height: 48px; margin-bottom: 14px;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.tcard__date { display: flex; align-items: center; gap: 14px; width: 33px; flex-shrink: 0; align-self: stretch; }
+.tcard__date-text { width: 26px; display: flex; flex-direction: column; gap: 2px; text-align: center; }
+.tcard__date small { font-size: 12px; line-height: 1.07; color: var(--gray-600); }
+.tcard__date strong { font-weight: 700; font-size: 16px; line-height: 22px; color: var(--gray-800); }
+.tcard__divider { width: 1px; align-self: stretch; background: var(--gray-200); border-radius: 2px; }
+
+/* Empty state · grey icon circle as a button (reveals the tab's cards) */
+.empty__icon--btn { cursor: pointer; transition: background-color var(--dur) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+.empty__icon--btn:hover { background: var(--gray-100); }
+.empty__icon--btn:active { transform: scale(.97); }
+.empty__icon--btn:focus-visible { outline-offset: 4px; border-radius: 45px; }
+.empty__icon--btn.is-loading { pointer-events: none; animation: pulse 1s ease-in-out infinite; }
+
 /* =========================================================================
    DEVELOPER FEED
    ========================================================================= */
@@ -490,7 +562,6 @@ button.statuslight:hover { background: var(--gray-75); }
 .trow--auto .tcell { line-height: 20px; }
 .t-dark { color: var(--gray-800); }
 .t-link { font-weight: 500; color: var(--accent); text-align: left; position: relative; z-index: 1; max-width: 100%; }
-.t-link:hover { text-decoration: underline; }
 .t-link--regular { font-weight: 400; }
 .loc { display: flex; gap: 4px; }
 .loc .add { font-weight: 500; color: var(--positive-text); }
@@ -500,7 +571,6 @@ button.statuslight:hover { background: var(--gray-75); }
 .tcell--location img { width: 16px; height: 16px; flex-shrink: 0; }
 .tempty { padding: 32px 16px; text-align: center; color: var(--gray-600); font-size: 14px; }
 .tempty button { color: var(--accent); font-weight: 500; margin-left: 4px; }
-.tempty button:hover { text-decoration: underline; }
 
 /* attendees */
 .attendees { display: flex; align-items: center; isolation: isolate; }
@@ -508,13 +578,11 @@ button.statuslight:hover { background: var(--gray-75); }
 .attendees__avatar img { width: 100%; height: 100%; object-fit: cover; }
 .attendees__avatar + .attendees__avatar, .attendees__avatar + .attendees__more { margin-left: -6px; }
 .attendees__more {
-  width: 24px; height: 24px; border-radius: 12px; border: 2px solid #fff; background: var(--gray-100); flex-shrink: 0;
+  width: 24px; height: 24px; border-radius: 12px; border: 2px solid #fff; background: none; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center; padding-left: 6px; position: relative; z-index: 0;
   font-weight: 700; font-size: 11px; line-height: 14px; color: var(--accent);
   transition: background-color var(--dur-fast), transform var(--dur-fast);
 }
-.attendees__more:hover { background: var(--gray-200); }
-.attendees__more[aria-expanded="true"] { background: var(--gray-200); }
 
 /* popover · attendees */
 .backdrop { position: fixed; inset: 0; z-index: 50; background: transparent; }
