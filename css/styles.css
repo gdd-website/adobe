@@ -575,6 +575,7 @@ button.statuslight:hover { background: var(--gray-75); }
 .empty__desc { font-size: 16px; color: var(--gray-600); }
 .empty__actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
 .empty--compact { min-height: 240px; }
+.empty--home { width: 100%; min-height: 360px; }
 
 /* skeleton */
 .skel { position: relative; overflow: hidden; background: var(--gray-100); border-radius: 4px; height: 12px; }

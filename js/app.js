@@ -19,12 +19,15 @@
     jira: 'disconnected',   // connected | disconnected
     cal: 'disconnected',    // connected | disconnected
     runs: 'empty',          // data | empty
+    // Developer Home tabs start on the same empty states as the feed; a button reveals the cards
+    home: { prs: false, jira: false, meetings: false },
     pr: { kind: 'all', repo: 'all' },
     jf: { type: 'all', priority: 'all', status: 'all' },
     rf: { show: 'mine', status: 'all', q: '' },
   };
   const saved = JSON.parse(sessionStorage.getItem('dh-state-v2') || 'null');
   const S = Object.assign(structuredClone(DEFAULTS), saved || {});
+  S.home = Object.assign({ prs: false, jira: false, meetings: false }, S.home);
   const T = { loading: {}, syncing: {} }; // transient, not persisted
   const persist = () => sessionStorage.setItem('dh-state-v2', JSON.stringify(S));
   DH.state = S;
@@ -61,8 +64,19 @@
   /* ======================================================================
      HOME
      ====================================================================== */
+  // Home tab empty states reuse the Developer Feed empty-state designs (icon, copy, buttons, motion)
+  const HOME_EMPTY = {
+    prs: () => C.empty({ variant: 'github', icon: 'github.svg', title: 'You’re not connected to GitHub', desc: 'Connect to GitHub to view and manage your pull requests.',
+      actions: C.btn('Connect to GitHub SaaS', 'home-reveal', 'accent', 'data-tab="prs" data-msg="GitHub SaaS connected (simulated)."')
+        + C.btn('Connect to GitHub Corp', 'home-reveal', 'secondary', 'data-tab="prs" data-msg="GitHub Corp connected (simulated)."') }),
+    jira: () => C.empty({ variant: 'jira', iconHtml: `<span class="jira-mark"><img src="${I('jira-group.svg')}" alt=""></span>`, title: 'You’re not connected to Jira', desc: 'Please log in here to see your pull requests.',
+      actions: C.btn('Login', 'home-reveal', 'accent', 'data-tab="jira" data-msg="Signed in to Jira (simulated)."') }),
+    meetings: () => C.empty({ variant: 'calendar', iconHtml: `<span class="cal-icon">${DH.svg.calendar36}</span>`, title: 'Your calendar isn’t connected', desc: 'Connect your calendar to see today’s meetings, time booked, and agendas here.',
+      actions: C.btn('Connect calendar', 'home-reveal', 'accent', 'data-tab="meetings" data-msg="Calendar connected (simulated)."') }),
+  };
   const homePanel = (tab) => {
     const t = DH.homeTabs.find((x) => x.id === tab);
+    if (HOME_EMPTY[tab] && !S.home[tab]) return HOME_EMPTY[tab]().replace('class="empty', 'class="empty empty--home');
     if (tab === 'prs') return `<div class="card-grid">${DH.homePRs.map(C.prCard).join('')}</div>${viewAll('github')}`;
     if (tab === 'jira') return `<div class="card-grid">${DH.homeJira.map(C.jiraCard).join('')}</div>${viewAll('jira')}`;
     if (tab === 'meetings') return `<div class="card-grid">${DH.homeMeetings.map(C.meetingCard).join('')}</div>${viewAll('meetings')}`;
@@ -454,6 +468,18 @@
   const notInSection = (what) => DH.toast(`${what} isn’t part of this Figma section — no screen to show.`, 'neutral');
 
   const ACTIONS = {
+    'home-reveal': async (el) => {
+      if (el.classList.contains('is-loading')) return;
+      el.classList.add('is-loading');
+      await wait(900);
+      S.home[el.dataset.tab] = true; persist();
+      const panel = $('#homePanel', main);
+      if (panel && S.homeTab === el.dataset.tab) {
+        panel.innerHTML = homePanel(el.dataset.tab);
+        panel.classList.remove('panel-in'); void panel.offsetWidth; panel.classList.add('panel-in');
+      }
+      DH.toast(el.dataset.msg, 'positive');
+    },
     'home-tab': (el) => DH.navigate(`#/home/${el.dataset.tab}`),
     'feed-tab': (el) => DH.navigate(`#/feed/${el.dataset.tab}`),
     quicklink: (el) => {
