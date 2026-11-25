@@ -715,3 +715,7 @@ button.statuslight:hover { background: var(--gray-75); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
 }
+
+/* Content width: everything inside the white page stays within 1200px, centred;
+   the white page itself still fills the screen, so wider screens just get more side space. */
+.home__body > *, .feed > * { width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto; }
