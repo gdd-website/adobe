@@ -81,7 +81,7 @@
     if (tab === 'jira') return `<div class="card-grid">${DH.homeJira.map(C.jiraCard).join('')}</div>${viewAll('jira')}`;
     if (tab === 'meetings') return `<div class="card-grid">${DH.homeMeetings.map(C.meetingCard).join('')}</div>${viewAll('meetings')}`;
     // Tabs present in the tab bar but not designed in this Figma section
-    return C.empty({ icon: 'globe-grid.svg', title: `${t.label}`, desc: 'This tab’s content isn’t part of the Developer Feed design section.' }).replace('class="empty', 'class="empty empty--compact');
+    return C.empty({ icon: 'folder-search.svg', title: 'No items to display', desc: 'There’s nothing to display here right now.' }).replace('class="empty', 'class="empty empty--compact');
   };
   // "View All" always lands on that feed tab's empty / not-connected state
   const EMPTY_QUERY = { github: 'gh=not-connected', jira: 'jira=disconnected', meetings: 'cal=disconnected' };
