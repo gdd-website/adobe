@@ -1,0 +1,46 @@
+/* Keyframes · subtle S2-style motion (150–250ms, ease-out, no bounce) */
+@keyframes viewIn   { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes panelIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popIn    { from { opacity: 0; transform: translateY(-4px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes popOut   { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-4px) scale(.98); } }
+@keyframes toastIn  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes toastOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(8px); } }
+@keyframes tipIn    { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut  { from { opacity: 1; } to { opacity: 0; } }
+@keyframes drawerIn { from { transform: translateX(-100%); } to { transform: none; } }
+@keyframes drawerOut{ from { transform: none; } to { transform: translateX(-100%); } }
+@keyframes spin     { to { transform: rotate(360deg); } }
+@keyframes pulse    { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes shimmer  { to { transform: translateX(100%); } }
+@keyframes flash    { 0% { opacity: 0; } 15% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
+
+.panel-in { animation: panelIn var(--dur) var(--ease-out) both; }
+
+
+
+/* Self Service Runs empty state · rocket body cruising in place */
+@keyframes rocketCruise {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25%      { transform: translate(1px, -1px) rotate(-2deg); }
+  50%      { transform: translate(0, 0) rotate(0deg); }
+  75%      { transform: translate(-0.5px, 0.5px) rotate(1.5deg); }
+}
+
+/* Self Service Runs empty state · faint exhaust wisp on the three lines.
+   Uses the independent `translate` property so it layers on top of rocketCruise's `transform`. */
+@keyframes rocketWisp {
+  0%, 100% { translate: 0 0; opacity: 1; }
+  50%      { translate: -1px 1px; opacity: .65; }
+}
+
+/* Meetings empty state · calendar date dots fade in / out */
+@keyframes calDot { 0%, 100% { opacity: 1; } 40% { opacity: .25; } 70% { opacity: 1; } }
+
+/* Jira empty state · gentle in-place cruise (same rhythm as the rocket) */
+@keyframes jiraCruise {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25%      { transform: translate(0, -1px) rotate(-2deg); }
+  50%      { transform: translate(0, 0) rotate(0deg); }
+  75%      { transform: translate(0, 0.5px) rotate(1.5deg); }
+}

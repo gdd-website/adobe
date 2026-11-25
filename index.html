@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developer Home · Developer Feed (Adobe S2 prototype)</title>
+  <!-- Tailwind (Play CDN) for layout utilities; component styling lives in css/styles.css -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { corePlugins: { preflight: false } };</script>
+  <link rel="stylesheet" href="css/styles.css?v=21">
+  <link rel="stylesheet" href="css/animations.css?v=21">
+</head>
+<body>
+  <a href="#main" class="sr-only">Skip to content</a>
+
+  <!-- Top navigation -->
+  <header class="topnav" data-name="Navigation">
+    <button class="topnav__menu" id="menuBtn" data-action="drawer" aria-label="Open navigation" aria-expanded="false">
+      <img src="assets/icons/apps-all.svg" alt="">
+    </button>
+    <a class="topnav__logo" href="#/home/prs" aria-label="Developer Home">
+      <img src="assets/icons/adobe-logo.svg" alt="">
+      <span>Developer Home</span>
+    </a>
+    <div class="topnav__actions">
+      <div class="topnav__icons">
+        <button class="navbtn navbtn--star" data-action="nav-favourites" data-tip="Favourites" aria-label="Favourites">
+          <span class="navbtn__glyph"><img src="assets/icons/star.svg" alt="" style="inset:0.73% 1.38% 6.67% 1.39%;width:auto;height:auto"></span>
+        </button>
+        <button class="navbtn navbtn--help" data-action="nav-help" data-tip="Help" aria-label="Help">
+          <span class="navbtn__glyph"><img src="assets/icons/help.svg" alt="" style="inset:5.56%;width:auto;height:auto"></span>
+        </button>
+        <button class="navbtn" data-action="nav-notifications" data-tip="Notifications" aria-label="Notifications, 17 unread">
+          <span class="navbtn__glyph">
+            <img src="assets/icons/bell-clapper.svg" alt="" style="inset:88.89% 38.89% 0 38.89%;width:auto;height:auto">
+            <img src="assets/icons/bell-body.svg" alt="" style="inset:5.55% 11.11% 16.67% 11.11%;width:auto;height:auto">
+          </span>
+          <span class="navbtn__badge" id="notifBadge">17</span>
+        </button>
+      </div>
+      <button class="avatar-btn" data-action="nav-profile" data-tip="Ronit Kumar" aria-label="Account: Ronit Kumar">
+        <img src="assets/images/avatar.png" alt="">
+      </button>
+    </div>
+  </header>
+
+  <!-- Left navigation rail -->
+  <nav class="rail" aria-label="Main navigation" id="rail"></nav>
+
+  <!-- Main content (views rendered by js/app.js) -->
+  <main class="main" id="main" tabindex="-1"></main>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <!-- Prototype tooling (not part of the design; hide with ?clean=1) -->
+  <button class="proto-fab" id="protoFab" data-action="proto" aria-expanded="false">Prototype states</button>
+
+  <script src="js/icons.js?v=21"></script>
+  <script src="js/data.js?v=21"></script>
+  <script src="js/components.js?v=21"></script>
+  <script src="js/interactions.js?v=21"></script>
+  <script src="js/router.js?v=21"></script>
+  <script src="js/app.js?v=21"></script>
+</body>
+</html>
